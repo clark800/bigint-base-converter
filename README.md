@@ -1,5 +1,5 @@
-js-bignum-base-converter
-========================
+js-bignum
+=========
 
 Javascript bignum class for addition, multiplication, and base conversion.
 
