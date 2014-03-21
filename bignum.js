@@ -1,3 +1,5 @@
+// Copyright (c) 2014 Chris Clark
+
 function BigNum(initRadix, initValue) {
     var radix = initRadix;
     var digits = [];   // least significant digits first
