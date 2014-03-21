@@ -1,3 +1,5 @@
+// Copyright (c) 2014 Chris Clark
+
 // RFC1924 Base85 (Joke RFC)
 var BASE85 = ('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
               + 'abcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~');
