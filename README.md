@@ -5,7 +5,7 @@ Javascript bignum class for addition, multiplication, and base conversion.
 
 Sample code is provided with an implementation of RFC 1924, a joke RFC that says:
 
-> 7. Implementation Issues
+>   Implementation Issues
 
 >   Many current processors do not find 128 bit integer arithmetic, as
 >   required for this technique, a trivial operation.  This is not
