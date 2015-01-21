@@ -1,0 +1,19 @@
+{
+  "name": "bigint-base-converter",
+  "version": "0.1.0",
+  "description": "Convert big integers from any base to any base",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clark800/bigint-base-converter"
+  },
+  "main": "convertbase.js",
+  "keywords": [
+    "bigint",
+    "base",
+    "converter",
+    "radix"
+  ]
+}
