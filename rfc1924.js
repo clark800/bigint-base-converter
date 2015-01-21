@@ -1,5 +1,5 @@
 // Copyright (c) 2014 Chris Clark
-var convertEncoding = require('./bigint.js').convertEncoding;
+var convertBase = require('./bigint.js');
 
 // RFC1924 Base85 (Joke RFC)
 var BASE85 = ('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -11,12 +11,12 @@ function rfc1924test() {
     var base85 = '4)+k&C#VzJ4br>0wv%Yp';
     var dec = BASE85.slice(0, 10);
     var hex = BASE85.slice(0, 16);
-    console.assert(convertEncoding(base16, hex, dec) === base10);
-    console.assert(convertEncoding(base10, dec, hex) === base16);
-    console.assert(convertEncoding(base16, hex, BASE85) === base85);
-    console.assert(convertEncoding(base10, dec, BASE85) === base85);
-    console.assert(convertEncoding(base85, BASE85, hex) === base16);
-    console.assert(convertEncoding(base85, BASE85, dec) === base10);
+    console.assert(convertBase(base16, hex, dec) === base10);
+    console.assert(convertBase(base10, dec, hex) === base16);
+    console.assert(convertBase(base16, hex, BASE85) === base85);
+    console.assert(convertBase(base10, dec, BASE85) === base85);
+    console.assert(convertBase(base85, BASE85, hex) === base16);
+    console.assert(convertBase(base85, BASE85, dec) === base10);
     console.log('All tests passed');
 }
 

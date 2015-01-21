@@ -92,23 +92,35 @@ BigInt.prototype.toBase = function(newRadix) {
   return result;
 };
 
-function encodeBigNum(n) {
-    return n.array().map(function(i) { return BASE85.charAt(i); }).join('');
-}
-
-function decodeBigNum(str, radix) {
-    var array = str.split('').map(function(c) { return BASE85.indexOf(c); });
-    return (new BigNum(radix)).load(array);
-}
-
-function convertEncoding(encoded, fromAlphabet, toAlphabet) {
-    var digits = encoded.split('').map(function(c) {
-      return fromAlphabet.indexOf(c);
+function toBigInt(value, radix) {
+  if (radix === parseInt(radix) && radix >= 2) {
+    return new BigInt(value, radix);
+  } else if (typeof radix === 'string') {
+    var alphabet = radix;
+    var digits = value.split('').map(function(c) {
+      return alphabet.indexOf(c);
     });
-    var bigint = new BigInt(digits, fromAlphabet.length);
-    return bigint.toBase(toAlphabet.length).getDigits().map(function(i) {
-      return toAlphabet.charAt(i);
-    }).join('');
+    return new BigInt(digits, alphabet.length);
+  } else {
+    throw new Error('Invalid type for "radix"');
+  }
 }
 
-module.exports.convertEncoding = convertEncoding;
+function fromBigInt(bigint, radix) {
+  if (radix === parseInt(radix) && radix >= 2) {
+    return bigint.toBase(radix).getDigits();
+  } else if (typeof radix === 'string') {
+    var alphabet = radix;
+    return bigint.toBase(alphabet.length).getDigits().map(function(i) {
+      return alphabet.charAt(i);
+    }).join('');
+  } else {
+    throw new Error('Invalid type for "radix"');
+  }
+}
+
+function convertBase(value, fromBase, toBase) {
+    return fromBigInt(toBigInt(value, fromBase), toBase);
+}
+
+module.exports = convertBase;
