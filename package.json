@@ -1,6 +1,6 @@
 {
   "name": "bigint-base-converter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Convert big integers from any base to any base",
   "scripts": {
     "test": "node test.js"
