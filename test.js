@@ -19,5 +19,11 @@ function rfc1924test() {
     console.assert(convertBase(base85, BASE85, dec) === base10);
 }
 
+function unitTest() {
+    var base10 = '11101110111011101110';
+    console.assert(convertBase(base10, 10, 10).join('') === base10);
+}
+
 rfc1924test();
+unitTest();
 console.log('All tests passed');

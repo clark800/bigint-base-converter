@@ -1,9 +1,18 @@
 // Copyright (c) 2014 Chris Clark
 
+// digits are stored in reverse order
+function removeLeadingZeros(digits) {
+  while(digits[digits.length - 1] === 0)
+    digits.pop();
+  return digits;
+}
+
 function BigInt(value, radix) {
   this._radix = radix || 10;
   if (value && value.constructor === Array) {
-    this._digits = value.reverse();
+    this._digits = value.slice(0).reverse();
+  } else if (typeof value === 'string' || value instanceof String) {
+    this._digits = value.split('').reverse();
   } else if (!isNaN(value)) {
     this._digits = [];
     for(var i = 0; value > 0; i++) {
@@ -13,8 +22,7 @@ function BigInt(value, radix) {
   } else {
     throw new Error('Unrecognized value type: ' + (typeof value));
   }
-  while(this._digits[this._digits.length - 1] === 0)
-    this._digits.pop();         // normalize to have no leading zeros
+  removeLeadingZeros(this._digits);
 }
 
 BigInt.prototype.getRadix = function() {
@@ -30,7 +38,7 @@ BigInt.prototype.numberOfDigits = function() {
 };
 
 BigInt.prototype.getDigit = function(i) {
-  return i < this.numberOfDigits() ? this._digits[i] : 0;
+  return i < this.numberOfDigits() ? Number(this._digits[i]) : 0;
 };
 
 BigInt.prototype.add = function(n) {
