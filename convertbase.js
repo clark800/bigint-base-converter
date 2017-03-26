@@ -7,18 +7,76 @@ function removeLeadingZeros(digits) {
   return digits;
 }
 
+function isArray(x) {
+  return x && x.constructor === Array;
+}
+
+function isNatural(x) {
+  return parseInt(x) === x && x >= 0;
+}
+
+function isString(x) {
+  return typeof x === 'string' || x instanceof String;
+}
+
+function parseDigits(valueString, radix) {
+  var characters = valueString.split('').reverse();
+  if (isString(radix) && radix.length >= 2) {
+    return characters.map(function(character) {
+      var value = radix.indexOf(character);
+      if (value === -1) {
+        throw new Error('Digit is not in alphabet: ' + character);
+      }
+      return value;
+    });
+  } else if (isNatural(radix) && radix >= 2) {
+    return characters.map(function(character) {
+      var value = parseInt(character);
+      if (!isNatural(value)) {
+        throw new Error('Digit is invalid: ' + character);
+      }
+      if (value >= radix) {
+        throw new Error('Digit is too large for radix: ' + character);
+      }
+      return value;
+    });
+  } else {
+    throw new Error('Invalix radix: ' + radix);
+  }
+}
+
+function computeDigits(value, radix) {
+  if (!isNatural(radix)) {
+    throw new Error('Radix must be a number if value is a number');
+  }
+  var digits = [];
+  for(var i = 0; value > 0; i++) {
+    digits.push(value % radix);
+    value = Math.floor(value / radix);
+  }
+  return digits;
+}
+
+function parseRadix(radix) {
+  if (!radix) {
+    return 10;
+  } else if (isString(radix) && radix.length >= 2) {
+    return radix.length;
+  } else if (isNatural(radix) && radix >= 2) {
+    return radix;
+  } else {
+    throw new Error('Invalid radix: ' + radix.toString());
+  }
+}
+
 function BigInt(value, radix) {
-  this._radix = radix || 10;
-  if (value && value.constructor === Array) {
+  this._radix = parseRadix(radix);
+  if (isArray(value)) {
     this._digits = value.slice(0).reverse();
-  } else if (typeof value === 'string' || value instanceof String) {
-    this._digits = value.split('').reverse();
-  } else if (!isNaN(value)) {
-    this._digits = [];
-    for(var i = 0; value > 0; i++) {
-      this._digits.push(value % this._radix);
-      value = Math.floor(value / this._radix);
-    }
+  } else if (isString(value)) {
+    this._digits = parseDigits(value, radix);
+  } else if (isNatural(value)) {
+    this._digits = computeDigits(value, radix);
   } else {
     throw new Error('Unrecognized value type: ' + (typeof value));
   }
@@ -101,34 +159,24 @@ BigInt.prototype.toBase = function(newRadix) {
 };
 
 function toBigInt(value, radix) {
-  if (radix === parseInt(radix) && radix >= 2) {
-    return new BigInt(value, radix);
-  } else if (typeof radix === 'string') {
-    var alphabet = radix;
-    var digits = value.split('').map(function(c) {
-      return alphabet.indexOf(c);
-    });
-    return new BigInt(digits, alphabet.length);
-  } else {
-    throw new Error('Invalid type for "radix"');
-  }
+  return new BigInt(value, radix);
 }
 
 function fromBigInt(bigint, radix) {
-  if (radix === parseInt(radix) && radix >= 2) {
+  if (isNatural(radix) && radix >= 2) {
     return bigint.toBase(radix).getDigits();
-  } else if (typeof radix === 'string') {
+  } else if (isString(radix) && radix.length >= 2) {
     var alphabet = radix;
     return bigint.toBase(alphabet.length).getDigits().map(function(i) {
       return alphabet.charAt(i);
     }).join('');
   } else {
-    throw new Error('Invalid type for "radix"');
+    throw new Error('Invalid radix');
   }
 }
 
 function convertBase(value, fromBase, toBase) {
-    return fromBigInt(toBigInt(value, fromBase), toBase);
+  return fromBigInt(toBigInt(value, fromBase), toBase);
 }
 
 module.exports = convertBase;
