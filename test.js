@@ -31,6 +31,12 @@ function unitTest() {
     var largeBinary = convertBase(large, 10, 2).join('');
     var largeDecimal = convertBase(largeBinary, 2, 10).join('');
     console.assert(largeDecimal === large);
+
+    var zero = convertBase('0000', '0123456789', '0123456789abcdef');
+    console.assert(zero === '0');
+
+    var zeroPrefix = convertBase('0001', '0123456789', '0123456789abcdef');
+    console.assert(zeroPrefix === '1');
 }
 
 rfc1924test();

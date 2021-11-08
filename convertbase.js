@@ -88,6 +88,9 @@ BigInt.prototype.getRadix = function() {
 };
 
 BigInt.prototype.getDigits = function() {
+  if (this._digits.length === 0) {
+    return [0];
+  }
   return this._digits.slice(0).reverse();
 };
 
